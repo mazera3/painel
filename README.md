@@ -82,4 +82,3 @@ php artisan make:filament-resource Role --generate --simple
 =======
 ```
 
->>>>>>> 36cd8834ba9ed53518cbc7dc732bc04839d1bbd6

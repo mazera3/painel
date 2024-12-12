@@ -1,3 +1,37 @@
+# Rodar este projeto
+```sh
+# editar aruivo env com as credencias do banco de dados
+cp .env.example .env
+# DB_CONNECTION=mysql
+# DB_DATABASE=painel
+# DB_USERNAME=root
+# DB_PASSWORD=password
+
+# atualizar o composer
+composer update
+# gerar a chave
+php artisan key:generate
+# migrar a base de dados
+php artisan migrate
+# rodar o servidor no porta :8000
+php artisan serve
+# Criar um usuario para acessar o painel
+php artisan make:filament-user
+# Usuario: Admin
+# Email: admin@admin.com
+# Senha: 123456
+```
+# Git e Github
+```sh
+git init
+git add .
+git commit -m "Video 1 e 2"
+git branch -M main
+git remote add origin https://github.com/mazera3/painel.git
+git push -u origin main
+# Atalização
+git pull origin main
+```
 # Instalações
 ## Referencias:
 * [Filament](https://filamentphp.com/docs/3.x/panels/installation)
@@ -29,7 +63,7 @@ php artisan make:filament-user
 # cria app/Filament/Resources/UserResource.php
 php artisan make:filament-resource User --generate
 ```
-## Larevel Permoission
+## Larevel Permission
 ```sh
 # instalar
 composer require spatie/laravel-permission
@@ -44,11 +78,3 @@ php artisan make:model Role
 # criar resourse Role: app/Filament/Resources/RolesResource.php
 php artisan make:filament-resource Role --generate --simple
 ```
-# Git
-````sh
-git init
-git add .
-git commit -m "Video 1 e 2"
-git branch -M main
-git remote add origin git@github.com:mazera3/painel.git
-git push -u origin main

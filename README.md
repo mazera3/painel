@@ -29,6 +29,8 @@ git commit -m "Video 1 e 2"
 git branch -M main
 git remote add origin https://github.com/mazera3/painel.git
 git push -u origin main
+# Atalização
+git pull origin main
 ```
 # Instalações
 ## Referencias:

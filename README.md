@@ -40,6 +40,10 @@ git pull origin main
 1. [Painel Administrativo com Laravel, Filament e Laravel-permission #01](https://youtu.be/sqXaDoGXh6s?si=dP8g_JuN4_ssvQJr)
 2. [Painel Administrativo com Laravel, Filament e Laravel-permission #02](https://youtu.be/2luZVm99RgQ?si=TuQHHeELfccEF4hI)
 3. [Painel Administrativo com Laravel, Filament e Laravel-permission #03](https://youtu.be/ppBXNFkbXgI?si=Z29vyOctp_LJLv87)
+4. [Painel Administrativo com Laravel, Filament e Laravel-permission #04](https://youtu.be/6oABAUbJb6k?si=lecWhft8NTHf8-Qw)
+5. [Painel Administrativo com Laravel, Filament e Laravel-permission #05](https://youtu.be/tESj0M8OFiI?si=JojGNRl56kMe2yga)
+6. 
+7. 
 ## Instalação do laravel
 ```sh
 laravel new painel
@@ -73,12 +77,34 @@ php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvid
 php artisan optimize:clear
 # atualizar a base de dados: cria a tabela permission, roles e relacionamentos
 php artisan migrate
+
 # criar model Role: app/Models/Role.php
 php artisan make:model Role
 # criar resourse Role: app/Filament/Resources/RolesResource.php
 php artisan make:filament-resource Role --generate --simple
-<<<<<<< HEAD
 ```
-=======
+## Auto-hashing password field
+https://filamentphp.com/docs/3.x/forms/advanced#auto-hashing-password-field
+```sh
+# criar model Permission: app/Models/Permission.php
+php artisan make:model Permission
+# criar resourse Permission: app/Filament/Resources/PermissionResource.php
+php artisan make:filament-resource Permission --generate --simple
 ```
+## Integrating with an Eloquent relationship
+https://filamentphp.com/docs/3.x/forms/fields/select#integrating-with-an-eloquent-relationship
+```sh
+# BelongsToMany em UserResource
+Select::make('roles') ->multiple() ->relationship('roles','name')->preload()
+# https://spatie.be/docs/laravel-permission/v6/basic-usage/basic-usage
+# Models User
+use HasRoles
+```
+## Authorizing access to the panel
+https://filamentphp.com/docs/3.x/panels/users#authorizing-access-to-the-panel
+```sh
+# Models User
+class User extends Authenticatable implements FilamentUser
+
+## continua no vídeo #5
 

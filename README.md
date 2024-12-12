@@ -77,4 +77,9 @@ php artisan migrate
 php artisan make:model Role
 # criar resourse Role: app/Filament/Resources/RolesResource.php
 php artisan make:filament-resource Role --generate --simple
+<<<<<<< HEAD
 ```
+=======
+```
+
+>>>>>>> 36cd8834ba9ed53518cbc7dc732bc04839d1bbd6

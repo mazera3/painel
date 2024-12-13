@@ -106,5 +106,5 @@ https://filamentphp.com/docs/3.x/panels/users#authorizing-access-to-the-panel
 # Models User
 class User extends Authenticatable implements FilamentUser
 
-## continua no vídeo #5
+## continua no vídeo #5 2:43
 

@@ -37,12 +37,12 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255)
-                    ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                    ->dehydrated(fn (?string $state): bool => filled($state))
-                    ->required(fn (string $operation): bool => $operation === 'create'),
+                    ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
+                    ->dehydrated(fn(?string $state): bool => filled($state))
+                    ->required(fn(string $operation): bool => $operation === 'create'),
                 Forms\Components\Select::make('roles')
                     ->multiple()
-                    ->relationship('roles','name')
+                    ->relationship('roles', 'name')
                     ->preload()
             ]);
     }
@@ -53,11 +53,12 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
-                    ->label('Nome Completo'),
+                    ->label('Nome'),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
+                    ->label('Verificado em')
+                    ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
@@ -66,7 +67,8 @@ class UserResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

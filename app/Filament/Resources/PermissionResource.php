@@ -24,11 +24,13 @@ class PermissionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nome')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('roles')
+                    ->label('Roles')
                     ->multiple()
-                    ->relationship('roles','name')
+                    ->relationship('roles', 'name')
                     ->preload()
                 // Forms\Components\TextInput::make('guard_name')
                 //     ->required()
@@ -41,15 +43,18 @@ class PermissionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nome')
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('guard_name')
                 //     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Criado em')
+                    ->dateTime('d/m/Y H:i:s')
                     ->sortable(),
-                    // ->toggleable(isToggledHiddenByDefault: true),
+                // ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Atualizado em')
+                    ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

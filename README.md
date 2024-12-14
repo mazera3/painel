@@ -1,11 +1,17 @@
+# Configurando um Shell Alias
+- adicionar esta linha ao arquivo de configuração shell como ~/.bashrc e reinicie o shell.
+```sh
+# nano ~/.bashrc
+alias pa='php artisan'
+```
 # Rodar este projeto
 ```sh
 # editar aruivo env com as credencias do banco de dados
 cp .env.example .env
 # DB_CONNECTION=mysql
 # DB_DATABASE=painel
-# DB_USERNAME=root
-# DB_PASSWORD=password
+# DB_USERNAME="usuario root"
+# DB_PASSWORD="senha"
 
 # atualizar o composer
 composer update
@@ -42,7 +48,7 @@ git pull origin main
 3. [Painel Administrativo com Laravel, Filament e Laravel-permission #03](https://youtu.be/ppBXNFkbXgI?si=Z29vyOctp_LJLv87)
 4. [Painel Administrativo com Laravel, Filament e Laravel-permission #04](https://youtu.be/6oABAUbJb6k?si=lecWhft8NTHf8-Qw)
 5. [Painel Administrativo com Laravel, Filament e Laravel-permission #05](https://youtu.be/tESj0M8OFiI?si=JojGNRl56kMe2yga)
-6. 
+6. [Painel Administrativo com Laravel, Filament e Laravel-permission #06](https://youtu.be/E9OmVR5rhZ8?si=tcfGo-AbxxZpR5Jx)
 7. 
 ## Instalação do laravel
 ```sh
@@ -106,5 +112,10 @@ https://filamentphp.com/docs/3.x/panels/users#authorizing-access-to-the-panel
 # Models User
 class User extends Authenticatable implements FilamentUser
 
-## continua no vídeo #5 2:43
+## Vídeos #5 e #6
+```
+## Generating Policies
+```sh
+# cria app/Policies/UserPolicy.php
+php artisan make:policy UserPolicy --model=User
 

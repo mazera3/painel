@@ -49,7 +49,7 @@ git pull origin main
 4. [Painel Administrativo com Laravel, Filament e Laravel-permission #04](https://youtu.be/6oABAUbJb6k?si=lecWhft8NTHf8-Qw)
 5. [Painel Administrativo com Laravel, Filament e Laravel-permission #05](https://youtu.be/tESj0M8OFiI?si=JojGNRl56kMe2yga)
 6. [Painel Administrativo com Laravel, Filament e Laravel-permission #06](https://youtu.be/E9OmVR5rhZ8?si=tcfGo-AbxxZpR5Jx)
-7. 
+7. [Painel Administrativo com Laravel, Filament e Laravel-permission #07](https://youtu.be/zPcuDEskOKk?si=S5WP_E3v3XGPsH5Y)
 ## Instalação do laravel
 ```sh
 laravel new painel
@@ -118,4 +118,20 @@ class User extends Authenticatable implements FilamentUser
 ```sh
 # cria app/Policies/UserPolicy.php
 php artisan make:policy UserPolicy --model=User
+# cria app/Policies/RolePolicy.php
+pa make:policy RolePolicy --model=Role
+# cria app/Policies/PermissionPolicy.php
+pa make:policy PermissionPolicy --model=Permission
+# Criar permissions na base de dados
+permission_read
+permission_create
+permission_update
+permission_delete
+role_read
+role_create
+role_update
+role_delete
+# Regra para usuarios
+# fn(Builder $query) => auth()->user()->hasRole('Admin) ? null : $query->where('name','!=",'Admin')
+# https://filamentphp.com/docs/3.x/panels/resources/getting-started#disabling-global-scopes
 

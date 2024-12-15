@@ -50,6 +50,7 @@ git pull origin main
 5. [Painel Administrativo com Laravel, Filament e Laravel-permission #05](https://youtu.be/tESj0M8OFiI?si=JojGNRl56kMe2yga)
 6. [Painel Administrativo com Laravel, Filament e Laravel-permission #06](https://youtu.be/E9OmVR5rhZ8?si=tcfGo-AbxxZpR5Jx)
 7. [Painel Administrativo com Laravel, Filament e Laravel-permission #07](https://youtu.be/zPcuDEskOKk?si=S5WP_E3v3XGPsH5Y)
+8. [Painel Administrativo com Laravel, Filament e Laravel-permission #08](https://youtu.be/6eKso342QPA?si=8_5n1BA4UrqzjKjz)
 ## Instalação do laravel
 ```sh
 laravel new painel
@@ -135,3 +136,19 @@ role_delete
 # fn(Builder $query) => auth()->user()->hasRole('Admin) ? null : $query->where('name','!=",'Admin')
 # https://filamentphp.com/docs/3.x/panels/resources/getting-started#disabling-global-scopes
 
+# Criar Sedeer
+pa make:seeder PermissionSeeder
+pa make:seeder RoleSeeder
+# php artisan migrate:refresh --seed
+```
+# laravel-pt-BR-localization
+```sh
+# Instalação
+# https://github.com/lucascudo/laravel-pt-BR-localization
+php artisan lang:publish
+# Instale o pacote
+composer require lucascudo/laravel-pt-br-localization --dev
+# Publique as traduções
+php artisan vendor:publish --tag=laravel-pt-br-localization
+# altere a linha 8 do arquivo .env
+APP_LOCALE=pt_BR

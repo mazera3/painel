@@ -15,6 +15,7 @@ cp .env.example .env
 
 # atualizar o composer
 composer update
+npm install
 # gerar a chave
 php artisan key:generate
 # migrar a base de dados
@@ -26,6 +27,8 @@ php artisan make:filament-user
 # Usuario: Admin
 # Email: admin@admin.com
 # Senha: 123456
+php artisan migrate:refresh --seed
+npm run build
 ```
 # Git e Github
 ```sh
@@ -103,7 +106,7 @@ php artisan make:filament-resource Permission --generate --simple
 https://filamentphp.com/docs/3.x/forms/fields/select#integrating-with-an-eloquent-relationship
 ```sh
 # BelongsToMany em UserResource
-Select::make('roles') ->multiple() ->relationship('roles','name')->preload()
+# Select::make('roles') ->multiple() ->relationship('roles','name')->preload()
 # https://spatie.be/docs/laravel-permission/v6/basic-usage/basic-usage
 # Models User
 use HasRoles
@@ -161,6 +164,7 @@ php artisan make:view filament.logo
 # criar tema: resources/css/filament/admin/theme.css 
 # e resources/css/filament/admin/tailwind.config.js
 php artisan make:filament-theme
+npm install
 npm run build
 ```
 # Vídeos

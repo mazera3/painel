@@ -16,6 +16,11 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
+    public static function getModelLabel(): string
+    {
+        return __('User');
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $modelLabel = 'Usuário';
     protected static ?string $pluralModelLabel = 'Usuários';
@@ -28,13 +33,12 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Nome Completo')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->unique(ignoreRecord:true)
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 // Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
@@ -52,6 +56,8 @@ class UserResource extends Resource
                         fn(Builder $query) => auth()->user()->hasRole('Admin') ? null : $query->where('name', '!=', 'Admin')
                     )
                     ->preload()
+                    ->multiple()
+                    ->optionsLimit(3),
             ]);
     }
 
@@ -60,22 +66,18 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->label('Nome'),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
-                    ->label('Verificado em')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Criado em')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Atualizado em')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -111,9 +113,11 @@ class UserResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return auth()->user()->hasRole('Admin') 
-        ? parent::getEloquentQuery()
-        : parent::getEloquentQuery()->whereHas('roles', 
-        fn(Builder $query) => $query->where('name','!=', 'Admin') );
+        return auth()->user()->hasRole('Admin')
+            ? parent::getEloquentQuery()
+            : parent::getEloquentQuery()->whereHas(
+                'roles',
+                fn(Builder $query) => $query->where('name', '!=', 'Admin')
+            );
     }
 }

@@ -51,6 +51,7 @@ git pull origin main
 6. [Painel Administrativo com Laravel, Filament e Laravel-permission #06](https://youtu.be/E9OmVR5rhZ8?si=tcfGo-AbxxZpR5Jx)
 7. [Painel Administrativo com Laravel, Filament e Laravel-permission #07](https://youtu.be/zPcuDEskOKk?si=S5WP_E3v3XGPsH5Y)
 8. [Painel Administrativo com Laravel, Filament e Laravel-permission #08](https://youtu.be/6eKso342QPA?si=8_5n1BA4UrqzjKjz)
+9. [Laravel 11 com Filament (tradução pt-BR)](https://youtu.be/bBoXqX7Zwt4?si=zpnMAjLPyW_dDHLL)
 ## Instalação do laravel
 ```sh
 laravel new painel
@@ -152,3 +153,16 @@ composer require lucascudo/laravel-pt-br-localization --dev
 php artisan vendor:publish --tag=laravel-pt-br-localization
 # altere a linha 8 do arquivo .env
 APP_LOCALE=pt_BR
+```
+# Logos
+```sh
+# resources/views/filament/logo.blade.php
+php artisan make:view filament.logo
+# criar tema: resources/css/filament/admin/theme.css 
+# e resources/css/filament/admin/tailwind.config.js
+php artisan make:filament-theme
+npm run build
+```
+# Vídeos
+- [Filament: Logo / Favicon](https://youtu.be/F-zGGIpxR-Q?si=Wmmt4bcN2Tx63vzz)
+```sh

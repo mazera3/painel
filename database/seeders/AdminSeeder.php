@@ -2,20 +2,44 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
+// use App\Models\Role;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        // $SuperAdmin = User::find(1);
-        // $SuperAdmin->save();
-
-        $admin = User::firstOrcreate([
+        // Super Admin
+        $SuperAdmin = User::firstOrCreate([
+            'id'        => 1,
+            'name'      => 'SuperAdmin',
+            'email'     => 'super@admin.com',
+            'password' => Hash::make('123456'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+        ]);
+        $SuperAdmin->assignRole('Admin');
+        $SuperAdmin = Role::where('name', 'Admin')->first()->syncPermissions([
+            'access_admin',
+            'permission_read',
+            'permission_create',
+            'permission_updade',
+            'permission_delete',
+            'role_read',
+            'role_create',
+            'role_update',
+            'role_delete',
+            'user_read',
+            'user_create',
+            'user_update',
+            'user_delete',
+        ]);
+        // Admin
+        $admin = User::firstOrCreate([
             'id'        => 2,
             'name'      => 'Admin',
             'email'     => 'admin@admin.com',
@@ -23,13 +47,9 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
-
         $admin->assignRole('Admin');
 
-        // $admin = Role::where('name', 'Admin')->first();
-        // $admin->givePermissionTo([
-
-        $admin = Role::where('name', 'Admin')->first()->givePermissionTo([
+        $admin = Role::where('name', 'Admin')->first()->syncPermissions([
             'access_admin',
             'permission_read',
             'permission_create',
@@ -46,7 +66,7 @@ class AdminSeeder extends Seeder
         ]);
 
         // Gerente
-        $manager = User::firstOrcreate([
+        $manager = User::firstOrCreate([
             'id'        => 3,
             'name'      => 'Gerente',
             'email'     => 'gerente@gerente.com',
@@ -54,18 +74,18 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
-        $manager = Role::where('name', 'Manager')->first();
-        $manager->givePermissionTo([
+        $manager->assignRole('Manager');
+
+        $manager = Role::where('name', 'Manager')->first()->syncPermissions([
             'access_admin',
             'user_read',
             'user_create',
             'user_update',
             'user_delete',
-        ])->assignRole('Manager');
-        // $manager->assignRole('Manager');
+        ]);
 
         // Usuário
-        $user = User::firstOrcreate([
+        $user = User::firstOrCreate([
             'id'        => 4,
             'name'      => 'Usuario',
             'email'     => 'user@user.com',
@@ -73,11 +93,14 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
         ]);
-        $user = Role::where('name', 'User')->first();
-        $user->givePermissionTo([
+
+        $user->assignRole('User');
+
+        $user = Role::where('name', 'User')->first()->syncPermissions([
             'access_admin',
-        ])->assignRole('User');
-        // $user->assignRole('User');
+        ]);
+
+
 
         // Convidado
         $gest = User::firstOrcreate([
@@ -87,9 +110,10 @@ class AdminSeeder extends Seeder
             'password' => Hash::make('123456'),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
-        ])->assignRole('Gest');
-        $gest = Role::where('name', 'Gest')->first();
-        $gest->givePermissionTo([]);
+        ]);
+        $gest->assignRole('Gest');
+
+        $gest = Role::where('name', 'Gest')->first()->syncPermissions([]);
         // $gest->assignRole('Gest');
     }
 }

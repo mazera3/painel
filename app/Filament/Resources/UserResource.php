@@ -11,10 +11,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
+use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+    
 
     public static function getModelLabel(): string
     {
@@ -44,10 +46,15 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
+                    ->confirmed()
                     ->maxLength(255)
                     ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
                     ->dehydrated(fn(?string $state): bool => filled($state))
                     ->required(fn(string $operation): bool => $operation === 'create'),
+                Forms\Components\TextInput::make('password_confirmation')
+                    ->password()
+                    ->maxLength(255)
+                    ->same('password'),
                 Forms\Components\Select::make('roles')
                     ->multiple()
                     ->relationship(
@@ -57,7 +64,7 @@ class UserResource extends Resource
                     )
                     ->preload()
                     ->multiple()
-                    ->optionsLimit(3),
+                    ->optionsLimit(5),
             ]);
     }
 
@@ -98,7 +105,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ActivitylogRelationManager::class,
         ];
     }
 

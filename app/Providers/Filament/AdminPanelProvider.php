@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\EditProfile;
 use Filament\Forms\Components\Field;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -21,6 +22,10 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use Filament\Navigation\MenuItem;
+use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
+use Rmsramos\Activitylog\ActivitylogPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -28,12 +33,12 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             // ->sidebarCollapsibleOnDesktop()
-            ->bootUsing(function(){
-                Field::configureUsing(function(Field $field){
+            ->bootUsing(function () {
+                Field::configureUsing(function (Field $field) {
                     $field->translateLabel();
                 });
 
-                Column::configureUsing(function(Column $column){
+                Column::configureUsing(function (Column $column) {
                     $column->translateLabel();
                 });
             })
@@ -44,10 +49,16 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             # **** personalização ******
             ->registration()
-            ->topNavigation()
+            // ->profile(isSimple: false)
+            // ->profile(EditProfile::class)
+            ->databaseNotifications()
+            ->passwordReset()
+            ->authGuard('web')
+            ->emailVerification()
+            // ->topNavigation()
             ->brandName('BibeLivre')
             ->brandLogo(fn(): View => view('filament.logo'))
-            ->brandLogoHeight(fn() => Auth::check() ? '32px':'64px')
+            ->brandLogoHeight(fn() => Auth::check() ? '32px' : '64px')
             ->viteTheme('resources/css/filament/admin/theme.css')
             // ->brandLogo(asset('images/computador.svg'))
             // ->darkModeBrandLogo(asset('images/linkedin.jpg'))
@@ -79,6 +90,34 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                FilamentEditProfilePlugin::make()
+                    ->setTitle('Meu Perfil')
+                    ->setNavigationLabel('Meu Perfil')
+                    ->setNavigationGroup('Perfil')
+                    ->setIcon('heroicon-o-user')
+                    ->setSort(10)
+                    // ->shouldRegisterNavigation(false)
+                    ->shouldShowDeleteAccountForm(true)
+                    ->customProfileComponents([
+                        \App\Livewire\AddressUserProfile::class,
+                    ])
+                    ->shouldShowBrowserSessionsForm(true)
+                    ->shouldShowAvatarForm(
+                        value: true,
+                        directory: 'avatars', // image will be stored in 'storage/app/public/avatars
+                        rules: 'mimes:jpeg,png|max:1024' //only accept jpeg and png files with a maximum size of 1MB
+                    )
+            ])
+            ->plugins([
+                ActivitylogPlugin::make()
+                ->label('Log')
+                ->pluralLabel('Logs')
+                ->navigationGroup('Configurações')
+                ->navigationIcon('heroicon-o-shield-exclamation')
+                ->navigationCountBadge(true)
+                ->navigationSort(3),
             ]);
     }
 }

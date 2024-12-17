@@ -38,7 +38,8 @@ git commit -m "Video 1 e 2"
 git branch -M main
 git remote add origin https://github.com/mazera3/painel.git
 git push -u origin main
-# Atalização
+# Descartar mudanças locais e Atualizar
+git reset HEAD --hard
 git pull origin main
 ```
 # Instalações
@@ -169,4 +170,45 @@ npm run build
 ```
 # Vídeos
 - [Filament: Logo / Favicon](https://youtu.be/F-zGGIpxR-Q?si=Wmmt4bcN2Tx63vzz)
+- [Perfil de Usuário com Filament V3](https://youtu.be/heu_ZLx7Q34?si=NR54p2GrdovlBRIO)
+- [Filament Edit Profile | Filament plugin by joaopaulolndev](https://youtu.be/R526pQZQ5lY?si=OyjUIjE6vDv4PBnL)
 ```sh
+# https://filamentphp.com/docs/3.x/panels/users#customizing-the-authentication-features
+# criar página app/Filament/Pages/Auth/EditProfile.php
+php artisan make:filament-page Auth/EditProfile
+# Filament package to edit profile
+# https://github.com/joaopaulolndev/filament-edit-profile
+# instalar o plugin: https://filamentphp.com/plugins/joaopaulolndev-edit-profile
+composer require joaopaulolndev/filament-edit-profile
+# Avatar
+php artisan vendor:publish --tag="filament-edit-profile-avatar-migration"
+php artisan migrate
+php artisan storage:link
+# Campos cusmotizados: migrartion
+php artisan vendor:publish --tag="filament-edit-profile-custom-field-migration"
+php artisan migrate
+# config/filament-edit-profile.php
+php artisan vendor:publish --tag="filament-edit-profile-config"
+# Componentes personalizados: app/Livewire/AddressUserProfile.php
+php artisan make:edit-profile-form AddressUserProfile
+```
+## Notificações
+- [Filament: Enviado notificações com databaseNotifications](https://youtu.be/wReE56xivg0?si=ror9JuYqbNDxDL43)
+```sh
+# https://filamentphp.com/docs/3.x/notifications/database-notifications
+php artisan make:notifications-table
+php artisan migrate
+# Observer: app/Observers/UserObserver.php
+php artisan make:observer UserObserver --model=User
+```
+## Logs
+- [activitylog](https://github.com/rmsramos/activitylog)
+- [Filament: Spatie/Laravel-activitylog | Filament plugin by rmsramos](https://youtu.be/dOKbc1Tlv7U?si=lZ4gpTwV1jXBXZEw)
+- [Activitylog | Filament plugin by rmsramos](https://youtu.be/eNvfz8QMD2g?si=Dzz5zvescsWjwR6o)
+```sh
+# instalação
+composer require rmsramos/activitylog
+php artisan activitylog:install
+php artisan migrate
+# adicionar no Model User:
+use LogsActivity;

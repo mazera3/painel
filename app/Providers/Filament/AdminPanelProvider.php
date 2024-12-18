@@ -50,7 +50,7 @@ class AdminPanelProvider extends PanelProvider
             # **** personalização ******
             ->registration()
             // ->profile(isSimple: false)
-            // ->profile(EditProfile::class)
+            ->profile(EditProfile::class)
             ->databaseNotifications()
             ->passwordReset()
             ->authGuard('web')
@@ -91,33 +91,33 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->plugins([
-                FilamentEditProfilePlugin::make()
-                    ->setTitle('Meu Perfil')
-                    ->setNavigationLabel('Meu Perfil')
-                    ->setNavigationGroup('Perfil')
-                    ->setIcon('heroicon-o-user')
-                    ->setSort(10)
-                    // ->shouldRegisterNavigation(false)
-                    ->shouldShowDeleteAccountForm(true)
-                    ->customProfileComponents([
-                        \App\Livewire\AddressUserProfile::class,
-                    ])
-                    ->shouldShowBrowserSessionsForm(true)
-                    ->shouldShowAvatarForm(
-                        value: true,
-                        directory: 'avatars', // image will be stored in 'storage/app/public/avatars
-                        rules: 'mimes:jpeg,png|max:1024' //only accept jpeg and png files with a maximum size of 1MB
-                    )
-            ])
+            // ->plugins([
+            //     FilamentEditProfilePlugin::make()
+            //         ->setTitle('Meu Perfil')
+            //         ->setNavigationLabel('Meu Perfil')
+            //         ->setNavigationGroup('Perfil')
+            //         ->setIcon('heroicon-o-user')
+            //         ->setSort(10)
+            //         // ->shouldRegisterNavigation(false)
+            //         ->shouldShowDeleteAccountForm(true)
+            //         ->customProfileComponents([
+            //             \App\Livewire\AddressUserProfile::class,
+            //         ])
+            //         ->shouldShowBrowserSessionsForm(true)
+            //         ->shouldShowAvatarForm(
+            //             value: true,
+            //             directory: 'avatars', // image will be stored in 'storage/app/public/avatars
+            //             rules: 'mimes:jpeg,png|max:1024' //only accept jpeg and png files with a maximum size of 1MB
+            //         )
+            // ])
             ->plugins([
                 ActivitylogPlugin::make()
-                ->label('Log')
-                ->pluralLabel('Logs')
-                ->navigationGroup('Configurações')
-                ->navigationIcon('heroicon-o-shield-exclamation')
-                ->navigationCountBadge(true)
-                ->navigationSort(3),
+                    ->label('Log')
+                    ->pluralLabel('Logs')
+                    ->navigationGroup('Configurações')
+                    ->navigationIcon('heroicon-o-shield-exclamation')
+                    ->navigationCountBadge(true)
+                    ->navigationSort(3)
             ]);
     }
 }

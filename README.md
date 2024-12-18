@@ -212,3 +212,12 @@ php artisan activitylog:install
 php artisan migrate
 # adicionar no Model User:
 use LogsActivity;
+```
+## Endereço
+- [Custom Field com Filament v3](https://youtu.be/sCHsGFxWtGY?si=C3LilqHz_BgLQ3Eb)
+```sh
+# Criar Model e Migration Address: app/Models/Address.php
+php artisan make:model Address -m
+#  Crar a classe PostalCode: app/Forms/Components/PostalCode.php
+php artisan make:form-field PostalCode
+# Reverter ultima migração: php artisan migrate rollback

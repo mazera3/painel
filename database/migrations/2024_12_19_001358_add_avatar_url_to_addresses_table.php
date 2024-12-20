@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->json('custom_fields')->nullable();
+        Schema::table('addresses', function (Blueprint $table) {
+            $table->string(config('filament-edit-profile.avatar_column', 'avatar_url'))->after('uf')->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('custom_fields');
+        Schema::table('addresses', function (Blueprint $table) {
+            $table->dropColumn(config('filament-edit-profile.avatar_column', 'avatar_url'));
         });
     }
 };

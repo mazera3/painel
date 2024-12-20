@@ -31,5 +31,7 @@ class PermissionSeeder extends Seeder
         Permission::firstOrcreate(['name' => 'user_create']);
         Permission::firstOrcreate(['name' => 'user_update']);
         Permission::firstOrcreate(['name' => 'user_delete']);
+        // logs_view
+        Permission::firstOrcreate(['name' => 'logs_view']);
     }
 }

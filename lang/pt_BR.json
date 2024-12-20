@@ -165,5 +165,14 @@
   "Permission":"Permissão",
   "Created at":"Criado em",
   "Updated at":"Atualizado em",
-  "Email verified at":"E-Mail verificado em"
+  "Email verified at":"E-Mail verificado em",
+  "Document":"CPF",
+  "Address":"Rua",
+  "Postal code":"CEP",
+  "Complement":"Complemento",
+  "Number":"Número",
+  "Neighborhood":"Bairro/Localidade",
+  "City":"Município",
+  "Uf":"Estado (UF)",
+  "Avatar url":"Avatar"
 }

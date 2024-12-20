@@ -6,6 +6,7 @@ use App\Forms\Components\PostalCode;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -36,7 +37,7 @@ class EditProfile extends BaseEditProfile
 
     public static function getSlug(): string
     {
-        return static::$slug ?? 'me';
+        return static::$slug ?? 'perfil';
     }
 
     protected function hasFullWidthFormActions(): bool
@@ -58,6 +59,7 @@ class EditProfile extends BaseEditProfile
                     ->schema([
                         $this->getNameFormComponent(),
                         $this->getDocumentFormComponent(),
+                        $this->getAvatarFormComponent(),
                         $this->getEmailFormComponent(),
                         $this->getAddressFormComponent(),
                         $this->getPasswordFormComponent(),
@@ -71,31 +73,39 @@ class EditProfile extends BaseEditProfile
         return TextInput::make('document')
             ->label('CPF')
             ->mask('999.999.999-99')
-            ->disabled()
-            // ->required()
+            ->required()
             ->maxLength(14)
-            ->unique(true);
+            ->unique(ignoreRecord:true);
+    }
+
+    protected function getAvatarFormComponent(): Component
+    {
+        return FileUpload::make('avatar_url')
+        ->avatar()
+        ->image()
+        ->directory('avatars');
     }
 
     protected function getAddressFormComponent(): Component
     {
-        return Fieldset::make('Address')
+        return Fieldset::make('Endereço')
             ->relationship('address')
             ->schema([
                 PostalCode::make('postal_code')
                     ->viaCep(
                         setFields: [
-                            'address'        => 'logradouro',
+                            'rua'        => 'logradouro',
                             'number'        => 'numero',
-                            'neighborhood'  => 'bairro',
+                            'complement'    => 'Rua',
+                            'bairro'  => 'bairro',
                             'city'          => 'localidade',
                             'uf'         => 'uf',
                         ]
                     ),
-                TextInput::make('address'),
+                TextInput::make('rua'),
                 TextInput::make('number'),
                 TextInput::make('complement'),
-                TextInput::make('neighborhood'),
+                TextInput::make('bairro'),
                 TextInput::make('city'),
                 TextInput::make('uf'),
             ]);

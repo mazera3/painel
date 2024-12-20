@@ -37,6 +37,7 @@ class AdminSeeder extends Seeder
             'user_create',
             'user_update',
             'user_delete',
+            'logs_view',
         ]);
         // Admin
         $admin = User::firstOrCreate([
@@ -63,6 +64,7 @@ class AdminSeeder extends Seeder
             'user_create',
             'user_update',
             'user_delete',
+            'logs_view',
         ]);
 
         // Gerente

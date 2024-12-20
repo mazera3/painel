@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('postal_code')->nullable();
-            $table->string('address')->nullable();
+            $table->string('rua')->nullable();
             $table->string('number')->nullable();
             $table->string('complement')->nullable();
-            $table->string('neighborhood')->nullable();
+            $table->string('bairro')->nullable();
             $table->string('city')->nullable();
             $table->string('uf')->nullable();
+            $table->string('avatar_url')->nullable();
             $table->timestamps();
         });
     }

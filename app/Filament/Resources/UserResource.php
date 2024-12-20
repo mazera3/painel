@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Forms\Components\PostalCode;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,13 +12,11 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
-use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
-use Rmsramos\Activitylog\RelationManagers\ActivitylogRelationManager;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
-    
+
 
     public static function getModelLabel(): string
     {
@@ -43,6 +42,12 @@ class UserResource extends Resource
                     ->required()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
+                Forms\Components\TextInput::make('document')
+                    ->label('CPF')
+                    ->required()
+                    ->maxLength(14)
+                    ->mask('999.999.999-99')
+                    ->unique(ignoreRecord:true),
                 // Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
@@ -65,7 +70,46 @@ class UserResource extends Resource
                     )
                     ->preload()
                     ->multiple()
-                    ->optionsLimit(5),
+                    ->optionsLimit(5)
+                    ->columns(),
+                Forms\Components\Section::make('Endereço')
+                    // Forms\Components\Fieldset::make('Endereço')
+                    ->relationship('address')
+                    ->columns()
+                    ->schema([
+                        PostalCode::make('postal_code')
+                            ->helperText('Digite seu CEP e clique na lupa')
+                            ->label('CEP')
+                            ->validationAttribute('CEP')
+                            ->viaCep(
+                                setFields: [
+                                    'rua'           => 'logradouro',
+                                    'number'        => 'numero',
+                                    'complement'    => 'Rua',
+                                    'bairro'        => 'bairro',
+                                    'city'          => 'localidade',
+                                    'uf'            => 'uf',
+                                ]
+                            ),
+                        Forms\Components\TextInput::make('rua')
+                            ->columnSpanFull()
+                            ->label('Rua'),
+                        Forms\Components\TextInput::make('number')
+                            ->label('Número')
+                            ->extraAlpineAttributes([
+                                'x-on:cep.window' => "\$el.focus()",
+                            ]),
+                        Forms\Components\TextInput::make('complement')
+                            ->label('Complemento'),
+                        Forms\Components\TextInput::make('bairro')
+                            ->label('Bairro'),
+                        Forms\Components\TextInput::make('city')
+                            ->label('Cidade'),
+                        Forms\Components\TextInput::make('uf')
+                            ->label('Estado')
+                            ->minLength(2)
+                            ->maxLength(2),
+                    ]),
             ]);
     }
 
@@ -77,6 +121,7 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('document'),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
@@ -95,30 +140,12 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                ActivityLogTimelineTableAction::make('Activities')
-                ->withRelations(['roles'])
-                ->timelineIcons([
-                    'created' => 'heroicon-m-check-badge',
-                    'updated' => 'heroicon-m-pencil-square',
-                ])
-                ->timelineIconColors([
-                    'created' => 'info',
-                    'updated' => 'warning',
-                ])
-                ->limit(10), 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            ActivitylogRelationManager::class,
-        ];
     }
 
     public static function getPages(): array

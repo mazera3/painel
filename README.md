@@ -87,6 +87,7 @@ composer require spatie/laravel-permission
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 # php artisan optimize:clear or php artisan config:clear
 php artisan optimize:clear
+php artisan optimize:clear
 # atualizar a base de dados: cria a tabela permission, roles e relacionamentos
 php artisan migrate
 
@@ -128,6 +129,7 @@ php artisan make:policy UserPolicy --model=User
 pa make:policy RolePolicy --model=Role
 # cria app/Policies/PermissionPolicy.php
 pa make:policy PermissionPolicy --model=Permission
+
 # Criar permissions na base de dados
 permission_read
 permission_create
@@ -137,6 +139,11 @@ role_read
 role_create
 role_update
 role_delete
+user_read
+user_create
+user_update
+user_delete
+logs_view
 # Regra para usuarios
 # fn(Builder $query) => auth()->user()->hasRole('Admin) ? null : $query->where('name','!=",'Admin')
 # https://filamentphp.com/docs/3.x/panels/resources/getting-started#disabling-global-scopes
@@ -171,26 +178,16 @@ npm run build
 # Vídeos
 - [Filament: Logo / Favicon](https://youtu.be/F-zGGIpxR-Q?si=Wmmt4bcN2Tx63vzz)
 - [Perfil de Usuário com Filament V3](https://youtu.be/heu_ZLx7Q34?si=NR54p2GrdovlBRIO)
-- [Filament Edit Profile | Filament plugin by joaopaulolndev](https://youtu.be/R526pQZQ5lY?si=OyjUIjE6vDv4PBnL)
+- [Login / Registro de Usuário com Filament v3](https://youtu.be/SQcXFUmnnsw?si=T6Mo3RtL-Lpjjz8J)
 ```sh
 # https://filamentphp.com/docs/3.x/panels/users#customizing-the-authentication-features
 # criar página app/Filament/Pages/Auth/EditProfile.php
 php artisan make:filament-page Auth/EditProfile
-# Filament package to edit profile
-# https://github.com/joaopaulolndev/filament-edit-profile
-# instalar o plugin: https://filamentphp.com/plugins/joaopaulolndev-edit-profile
-composer require joaopaulolndev/filament-edit-profile
-# Avatar
-php artisan vendor:publish --tag="filament-edit-profile-avatar-migration"
-php artisan migrate
+php artisan make:filament-page Auth/Register
+php artisan make:filament-page Auth/Login
+
+
 php artisan storage:link
-# Campos cusmotizados: migrartion
-php artisan vendor:publish --tag="filament-edit-profile-custom-field-migration"
-php artisan migrate
-# config/filament-edit-profile.php
-php artisan vendor:publish --tag="filament-edit-profile-config"
-# Componentes personalizados: app/Livewire/AddressUserProfile.php
-php artisan make:edit-profile-form AddressUserProfile
 ```
 ## Notificações
 - [Filament: Enviado notificações com databaseNotifications](https://youtu.be/wReE56xivg0?si=ror9JuYqbNDxDL43)
@@ -202,13 +199,12 @@ php artisan migrate
 php artisan make:observer UserObserver --model=User
 ```
 ## Logs
-- [activitylog](https://github.com/rmsramos/activitylog)
-- [Filament: Spatie/Laravel-activitylog | Filament plugin by rmsramos](https://youtu.be/dOKbc1Tlv7U?si=lZ4gpTwV1jXBXZEw)
-- [Activitylog | Filament plugin by rmsramos](https://youtu.be/eNvfz8QMD2g?si=Dzz5zvescsWjwR6o)
+- [Laravel-activitylog](https://spatie.be/docs/laravel-activitylog/v4/installation-and-setup)
 ```sh
 # instalação
-composer require rmsramos/activitylog
-php artisan activitylog:install
+composer require spatie/laravel-activitylog
+# Migração
+php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
 php artisan migrate
 # adicionar no Model User:
 use LogsActivity;
@@ -221,3 +217,13 @@ php artisan make:model Address -m
 #  Crar a classe PostalCode: app/Forms/Components/PostalCode.php
 php artisan make:form-field PostalCode
 # Reverter ultima migração: php artisan migrate rollback
+php artisan migrate:rollback --step=1
+```
+## Avatar
+- [FilamentPHP na Prática / 14 - Upload de Fotos no FilamentPHP]()https://youtu.be/aN0Gb1r3J14?si=Mtf-FCBZ11gezvOw
+```sh
+# php artisan make:migration add_(campo)_to_(nome_da_tabela)_table --table=(tabela)
+php artisan migrate
+php artisan storage:link
+# visão geral conveniente de todos os atributos e relações do modelo
+php artisan model:show User

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Address extends Model
 {
@@ -13,16 +13,20 @@ class Address extends Model
     protected $fillable = [
         'user_id',
         'postal_code',
-        'address',
+        'rua',
         'number',
         'complement',
-        'neighborhood',
+        'bairro',
         'city',
         'uf',
+        'avatar_url',
     ];
 
-    public function users(): BelongsTo
+    protected $table = 'addresses';
+    protected $primaryKey = 'id';
+
+    public function users(): HasOne
     {
-        return $this->belongsTo(User::class);
+        return $this->HasOne(User::class);
     }
 }

@@ -18,13 +18,13 @@ class UserObserver
         Notification::make()
             ->warning()
             ->title('Bem vindo ao sistema')
-            ->body('Atualiza seu perfil')
-            ->actions([
-                Action::make('view')
-                    ->button()
-                    ->url(route('filament.admin.pages.edit-profile')),
-            ])
-            ->sendToDatabase($user);
+            ->body('Atualiza seu perfil');
+            // ->actions([
+            //     Action::make('view')
+            //         ->button()
+            //         ->url(route('filament.admin.pages.edit-profile')),
+            // ])
+            // ->sendToDatabase($user);
     }
 
     /**

@@ -206,8 +206,6 @@ composer require spatie/laravel-activitylog
 # Migração
 php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations"
 php artisan migrate
-# adicionar no Model User:
-use LogsActivity;
 ```
 ## Endereço
 - [Custom Field com Filament v3](https://youtu.be/sCHsGFxWtGY?si=C3LilqHz_BgLQ3Eb)
@@ -227,3 +225,8 @@ php artisan migrate
 php artisan storage:link
 # visão geral conveniente de todos os atributos e relações do modelo
 php artisan model:show User
+```
+## 
+- 
+```sh
+# Instalação

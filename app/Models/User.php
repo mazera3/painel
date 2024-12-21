@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
@@ -18,6 +20,7 @@ class User extends Authenticatable implements FilamentUser
     use HasFactory;
     use Notifiable;
     use HasRoles;
+    use LogsActivity;
 
 
     /**
@@ -31,6 +34,13 @@ class User extends Authenticatable implements FilamentUser
         'document',
         'password',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logFillable()
+        ->dontSubmitEmptyLogs();
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -65,5 +75,4 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasOne(Address::class);
     }
-
 }

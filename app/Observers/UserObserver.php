@@ -15,16 +15,19 @@ class UserObserver
      */
     public function created(User $user): void
     {
+        activity()->log('Usuário criado');
         Notification::make()
             ->warning()
             ->title('Bem vindo ao sistema')
-            ->body('Atualiza seu perfil');
-            // ->actions([
-            //     Action::make('view')
-            //         ->button()
-            //         ->url(route('filament.admin.pages.edit-profile')),
-            // ])
-            // ->sendToDatabase($user);
+            ->body('Atualiza seu perfil')
+            //
+            ->actions([
+                Action::make('view')
+                    ->button()
+                    ->url(route('filament.admin.pages.dashboard')),
+            ])
+            ->sendToDatabase($user);
+            //
     }
 
     /**
@@ -32,6 +35,7 @@ class UserObserver
      */
     public function updated(User $user): void
     {
+        activity()->log('Usuário atualizado');
         Notification::make()
             ->title('Account Updated')
             ->body('atualizado com sucesso')
@@ -43,6 +47,7 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
+        activity()->log('Usuário excluído');
         Notification::make()
             ->title('Account Updated')
             ->body('deletado com sucesso')

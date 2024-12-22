@@ -174,5 +174,10 @@
   "Neighborhood":"Bairro/Localidade",
   "City":"Município",
   "Uf":"Estado (UF)",
-  "Avatar url":"Avatar"
+  "Avatar url":"Avatar",
+  "Projects":"Projetos",
+  "Project":"Projeto",
+  "Completed":"Completado",
+  "Description":"Descrição",
+  "Tasks":"Tarefas"
 }

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers\TasksRelationManager;
 use App\Forms\Components\PostalCode;
 use App\Models\User;
 use Filament\Forms;
@@ -27,6 +28,9 @@ class UserResource extends Resource
     protected static ?string $modelLabel = 'Usuário';
     protected static ?string $pluralModelLabel = 'Usuários';
     protected static ?string $navigationLabel = 'Usuários';
+    protected static ?string $navigationGroup = 'Usuários';
+    protected static ?int $navigationSort = 1;
+
 
     protected static ?string $slug = 'users';
 
@@ -140,6 +144,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -148,12 +153,20 @@ class UserResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            TasksRelationManager::class
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
+            'view' => Pages\ViewUser::route('/{record}/view'),
         ];
     }
 

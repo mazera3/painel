@@ -129,21 +129,7 @@ php artisan make:policy UserPolicy --model=User
 pa make:policy RolePolicy --model=Role
 # cria app/Policies/PermissionPolicy.php
 pa make:policy PermissionPolicy --model=Permission
-
 # Criar permissions na base de dados
-permission_read
-permission_create
-permission_update
-permission_delete
-role_read
-role_create
-role_update
-role_delete
-user_read
-user_create
-user_update
-user_delete
-logs_view
 # Regra para usuarios
 # fn(Builder $query) => auth()->user()->hasRole('Admin) ? null : $query->where('name','!=",'Admin')
 # https://filamentphp.com/docs/3.x/panels/resources/getting-started#disabling-global-scopes
@@ -226,7 +212,5 @@ php artisan storage:link
 # visão geral conveniente de todos os atributos e relações do modelo
 php artisan model:show User
 ```
-## 
-- 
-```sh
-# Instalação
+## Implementação de Projetos e Tarefas
+- [filament-br](https://github.com/mazera3/filament-br)

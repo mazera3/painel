@@ -179,5 +179,14 @@
   "Project":"Projeto",
   "Completed":"Completado",
   "Description":"Descrição",
-  "Tasks":"Tarefas"
+  "Tasks":"Tarefas",
+  "Phone Numbers":"Fones",
+  "Full number":"Número Completo",
+  "Ddd":"DDD",
+  "Ddi":"DDI",
+  "Type":"Tipo",
+  "User id":"ID",
+  "Author id":"ID",
+  "Title":"Título"
+
 }

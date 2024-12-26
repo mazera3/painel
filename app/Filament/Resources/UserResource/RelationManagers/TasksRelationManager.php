@@ -30,7 +30,7 @@ class TasksRelationManager extends RelationManager
                     ->preload()
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
-                            ->label('Tarefa')
+                            ->label('Projeto')
                             ->required()
                             ->maxLength(255),
                     ])

@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class RolePolicy
 {
@@ -12,7 +13,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('role_read');
+        return $user->hasRole(['Admin','Moderator']);
     }
 
     /**
@@ -20,7 +21,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo('role_read');
+        return $user->hasRole(['Admin','Moderator']);
     }
 
     /**
@@ -28,7 +29,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('role_create');
+        return $user->hasRole(['Admin']);
     }
 
     /**
@@ -36,7 +37,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo('role_update');
+        return $user->hasRole(['Admin']);
     }
 
     /**
@@ -44,22 +45,22 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        return $user->hasPermissionTo('role_delete');
+        return $user->hasRole(['Admin']);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    // public function restore(User $user, Role $role): bool
-    // {
-    //     return false;
-    // }
+    public function restore(User $user, Role $role): bool
+    {
+        return false;
+    }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    // public function forceDelete(User $user, Role $role): bool
-    // {
-    //     return false;
-    // }
+    public function forceDelete(User $user, Role $role): bool
+    {
+        return false;
+    }
 }

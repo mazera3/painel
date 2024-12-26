@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('addresses', function (Blueprint $table) {
-            $table->string(config('filament-edit-profile.avatar_column', 'avatar_url'))->after('uf')->nullable();
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->longText('content')->nullable();
+            $table->boolean('published')->default(0);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('addresses', function (Blueprint $table) {
-            $table->dropColumn(config('filament-edit-profile.avatar_column', 'avatar_url'));
-        });
+        Schema::dropIfExists('categories');
     }
 };

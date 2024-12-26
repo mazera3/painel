@@ -80,6 +80,11 @@ php artisan make:filament-user
 php artisan make:filament-resource User --generate
 ```
 ## Larevel Permission
+- [Laravel-permission](https://spatie.be/docs/laravel-permission/v6/introduction)
+- [GitHub](https://github.com/spatie/laravel-permission)
+- [Spatie Roles Permissions](https://filamentphp.com/plugins/tharinda-rodrigo-spatie-roles-permissions)
+- [GitHub](https://github.com/althinect/filament-spatie-roles-permissions)
+- [PlayList](https://www.youtube.com/watch?v=WoHPF2BDcMc&list=PL6tf8fRbavl2oguMj5NSrQXhsd6ztc8_O&index=1)
 ```sh
 # instalar
 composer require spatie/laravel-permission
@@ -87,23 +92,20 @@ composer require spatie/laravel-permission
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
 # php artisan optimize:clear or php artisan config:clear
 php artisan optimize:clear
-php artisan optimize:clear
+# php artisan config:clear
 # atualizar a base de dados: cria a tabela permission, roles e relacionamentos
-php artisan migrate
+php artisan db:seed --class=UserSeeder
 
-# criar model Role: app/Models/Role.php
-php artisan make:model Role
 # criar resourse Role: app/Filament/Resources/RolesResource.php
-php artisan make:filament-resource Role --generate --simple
+# use Spatie\Permission\Models\Role;
+ph artisan make:filament-resource Role
+
+# criar resourse Permission: app/Filament/Resources/PermissionResource.php
+php artisan make:filament-resource Permission --generate
 ```
 ## Auto-hashing password field
 https://filamentphp.com/docs/3.x/forms/advanced#auto-hashing-password-field
-```sh
-# criar model Permission: app/Models/Permission.php
-php artisan make:model Permission
-# criar resourse Permission: app/Filament/Resources/PermissionResource.php
-php artisan make:filament-resource Permission --generate --simple
-```
+
 ## Integrating with an Eloquent relationship
 https://filamentphp.com/docs/3.x/forms/fields/select#integrating-with-an-eloquent-relationship
 ```sh
@@ -126,9 +128,14 @@ class User extends Authenticatable implements FilamentUser
 # cria app/Policies/UserPolicy.php
 php artisan make:policy UserPolicy --model=User
 # cria app/Policies/RolePolicy.php
-pa make:policy RolePolicy --model=Role
+php artisan make:policy RolePolicy --model=Role
+php artisan make:model Role
 # cria app/Policies/PermissionPolicy.php
-pa make:policy PermissionPolicy --model=Permission
+php artisan make:policy PermissionPolicy --model=Permission
+php artisan make:model Permission
+# cria app/Policies/PostPolicy.php
+php artisan make:policy PostPolicy --model=Post
+
 # Criar permissions na base de dados
 # Regra para usuarios
 # fn(Builder $query) => auth()->user()->hasRole('Admin) ? null : $query->where('name','!=",'Admin')
@@ -137,7 +144,9 @@ pa make:policy PermissionPolicy --model=Permission
 # Criar Sedeer
 pa make:seeder PermissionSeeder
 pa make:seeder RoleSeeder
-# php artisan migrate:refresh --seed
+php artisan migrate:refresh --seed
+php artisan db:seed --class=UserSeeder
+
 ```
 # laravel-pt-BR-localization
 ```sh
@@ -214,3 +223,10 @@ php artisan model:show User
 ```
 ## Implementação de Projetos e Tarefas
 - [filament-br](https://github.com/mazera3/filament-br)
+
+## Implementação de Posts, Categories e PhoneNumber
+- [HasMany](https://github.com/mazera3/Relacionamento-HasMany.git)
+
+## A verificar
+- https://github.com/laravel/fortify/tree/1.x
+- https://laravel.com/docs/11.x/fortify

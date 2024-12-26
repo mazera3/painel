@@ -4,9 +4,9 @@ namespace App\Filament\Resources\PermissionResource\Pages;
 
 use App\Filament\Resources\PermissionResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\ListRecords;
 
-class ManagePermissions extends ManageRecords
+class ListPermissions extends ListRecords
 {
     protected static string $resource = PermissionResource::class;
 

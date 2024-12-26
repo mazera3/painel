@@ -17,10 +17,10 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-folder-open';
     protected static ?string $navigationLabel = 'Projetos';
-    protected static ?string $navigationGroup = 'Usuários';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Postagens';
+    protected static ?int $navigationSort = 6;
 
 
     public static function form(Form $form): Form

@@ -6,13 +6,18 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers\TasksRelationManager;
 use App\Forms\Components\PostalCode;
 use App\Models\User;
-use Filament\Forms;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserResource extends Resource
 {
@@ -37,82 +42,134 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(null)
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('document')
-                    ->label('CPF')
-                    ->required()
-                    ->maxLength(14)
-                    ->mask('999.999.999-99')
-                    ->unique(ignoreRecord:true),
-                // Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->confirmed()
-                    ->maxLength(255)
-                    ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
-                    ->dehydrated(fn(?string $state): bool => filled($state))
-                    ->required(fn(string $operation): bool => $operation === 'create'),
-                Forms\Components\TextInput::make('password_confirmation')
-                    ->password()
-                    ->maxLength(255)
-                    ->same('password'),
-                Forms\Components\Select::make('roles')
-                    ->multiple()
-                    ->relationship(
-                        'roles',
-                        'name',
-                        fn(Builder $query) => auth()->user()->hasRole('Admin') ? null : $query->where('name', '!=', 'Admin')
-                    )
-                    ->preload()
-                    ->multiple()
-                    ->optionsLimit(5)
-                    ->columns(),
-                Forms\Components\Section::make('Endereço')
-                    // Forms\Components\Fieldset::make('Endereço')
-                    ->relationship('address')
-                    ->columns()
-                    ->schema([
-                        PostalCode::make('postal_code')
-                            ->helperText('Digite seu CEP e clique na lupa')
-                            ->label('CEP')
-                            ->validationAttribute('CEP')
-                            ->viaCep(
-                                setFields: [
-                                    'rua'           => 'logradouro',
-                                    'number'        => 'numero',
-                                    'complement'    => 'Rua',
-                                    'bairro'        => 'bairro',
-                                    'city'          => 'localidade',
-                                    'uf'            => 'uf',
-                                ]
-                            ),
-                        Forms\Components\TextInput::make('rua')
-                            ->columnSpanFull()
-                            ->label('Rua'),
-                        Forms\Components\TextInput::make('number')
-                            ->label('Número')
-                            ->extraAlpineAttributes([
-                                'x-on:cep.window' => "\$el.focus()",
+                Tabs::make()
+                    ->columns(2)
+                    ->tabs([
+                        Tabs\Tab::make('Informações do Usuário')
+                            ->icon('heroicon-o-user')
+                            ->schema([
+                                TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                TextInput::make('email')
+                                    ->email()
+                                    ->required()
+                                    ->maxLength(255),
+                                TextInput::make('document')
+                                    ->label('CPF')
+                                    ->required()
+                                    ->maxLength(14)
+                                    ->mask('999.999.999-99')
+                                    ->unique(ignoreRecord: true),
+                                // Forms\Components\DateTimePicker::make('email_verified_at'),
+                                TextInput::make('password')
+                                    ->password()
+                                    ->dehydrateStateUsing(fn(string $state): string => Hash::make($state))
+                                    ->dehydrated(fn(?string $state): bool => filled($state))
+                                    ->required(fn(string $operation): bool => $operation === 'create')
+                                    ->revealable(filament()->arePasswordsRevealable())
+                                    // ->rule(Password::default())
+                                    // ->autocomplete(false)
+                                    // ->dehydrated(fn($state): bool => filled($state))
+                                    // ->live(debounce: 500)
+                                    ->same('password Confirmation')
+                                    ->maxLength(255),
+                                TextInput::make('password Confirmation')
+                                    ->password()
+                                    ->revealable(filament()->arePasswordsRevealable())
+                                    ->required()
+                                    ->visible(fn(Get $get): bool => filled($get('password')))
+                                    ->dehydrated(false),
                             ]),
-                        Forms\Components\TextInput::make('complement')
-                            ->label('Complemento'),
-                        Forms\Components\TextInput::make('bairro')
-                            ->label('Bairro'),
-                        Forms\Components\TextInput::make('city')
-                            ->label('Cidade'),
-                        Forms\Components\TextInput::make('uf')
-                            ->label('Estado')
-                            ->minLength(2)
-                            ->maxLength(2),
+                        Tabs\Tab::make('Relacionamentos')
+                            ->icon('heroicon-o-user')
+                            ->schema([
+                                Select::make('roles')
+                                    ->multiple()
+                                    ->relationship(titleAttribute: 'name')
+                                    ->preload()
+                                    ->optionsLimit(5),
+                                Select::make('permissions')
+                                    ->multiple()
+                                    ->relationship(titleAttribute: 'name')
+                                    ->preload()
+                                    ->optionsLimit(5)
+                            ]),
+
+
+                        Tabs\Tab::make('Telefones')
+                            ->columns(null)
+                            ->icon('heroicon-o-phone')
+                            ->schema([
+                                Repeater::make('phoneNumbers')
+                                    ->relationship()
+                                    ->columns(4)
+                                    ->schema([
+                                        TextInput::make('type')
+                                            // ->required()
+                                            ->maxLength(255),
+                                        TextInput::make('ddi')
+                                            ->mask('99')
+                                            ->prefix('+')
+                                            // ->required()
+                                            ->maxLength(255),
+                                        TextInput::make('ddd')
+                                            ->prefix('0')
+                                            ->mask('99')
+                                            // ->required()
+                                            ->maxLength(255),
+                                        TextInput::make('number')
+                                            ->mask('99999-9999')
+                                            // ->required()
+                                            ->maxLength(255),
+                                    ])
+                            ]),
+                        Tabs\Tab::make('Endereço')
+                            // ->relationship('address')
+                            ->columns(4)
+                            ->icon('heroicon-o-calendar-date-range')
+                            ->schema([
+                                PostalCode::make('postal_code')
+                                    ->helperText('Digite seu CEP e clique na lupa')
+                                    ->label('CEP')
+                                    ->validationAttribute('CEP')
+                                    ->viaCep(
+                                        setFields: [
+                                            'rua'           => 'logradouro',
+                                            'number'        => 'numero',
+                                            'complement'    => 'Rua',
+                                            'bairro'        => 'bairro',
+                                            'city'          => 'localidade',
+                                            'uf'            => 'uf',
+                                        ]
+                                    )->required(false),
+                                TextInput::make('rua')
+                                    // ->columnSpanFull()
+                                    ->columnSpan(3)
+                                    ->label('Rua'),
+                                TextInput::make('number')
+                                    ->label('Número')
+                                    ->columns(1)
+                                    ->extraAlpineAttributes([
+                                        'x-on:cep.window' => "\$el.focus()",
+                                    ]),
+                                TextInput::make('complement')
+                                    ->columnSpan(3)
+                                    ->label('Complemento'),
+                                TextInput::make('bairro')
+                                    ->columnSpan(1)
+                                    ->label('Bairro'),
+                                TextInput::make('city')
+                                    ->label('Cidade')
+                                    ->columnSpan(2),
+                                TextInput::make('uf')
+                                    ->label('Estado')
+                                    ->columns(1)
+                                    ->minLength(2)
+                                    ->maxLength(2),
+                            ]),
                     ]),
             ]);
     }
@@ -121,20 +178,26 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('email')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('document'),
-                Tables\Columns\TextColumn::make('email_verified_at')
+                TextColumn::make('document'),
+                TextColumn::make('phoneNumbers.full_number')
+                    ->label('Phone Number')
+                    ->searchable()
+                    ->sortable()
+                    ->listWithLineBreaks(),
+                TextColumn::make('email_verified_at')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -144,6 +207,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
@@ -168,15 +232,5 @@ class UserResource extends Resource
             'edit' => Pages\EditUser::route('/{record}/edit'),
             'view' => Pages\ViewUser::route('/{record}/view'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return auth()->user()->hasRole('Admin')
-            ? parent::getEloquentQuery()
-            : parent::getEloquentQuery()->whereHas(
-                'roles',
-                fn(Builder $query) => $query->where('name', '!=', 'Admin')
-            );
     }
 }

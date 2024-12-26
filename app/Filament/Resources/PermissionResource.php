@@ -3,48 +3,47 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PermissionResource\Pages;
-use App\Filament\Resources\PermissionResource\RelationManagers;
 use App\Models\Permission;
-use Filament\Forms;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
 
-    protected static ?int $navigationSort = 1;
-    protected static ?string $navigationGroup = 'Configurações';
-
-    protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
-    protected static ?string $modelLabel = 'Permissão';
-    protected static ?string $pluralModelLabel = 'Permissões';
-    protected static ?string $navigationLabel = 'Permissões';
-
-    protected static ?string $slug = 'permissions';
-
-
-
+    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static ?string $navigationGroup = 'Settings';
+    protected static ?int $navigationSort = 10;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(255),
-                Forms\Components\Select::make('roles')
-                    ->multiple()
-                    ->relationship('roles', 'name')
-                    ->preload()
-                // Forms\Components\TextInput::make('guard_name')
-                //     ->required()
-                //     ->maxLength(255),
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tabs\Tab::make('Permissões')
+                            ->schema([
+                                TextInput::make('name')
+                                    ->minLength(2)
+                                    ->maxLength(255)
+                                    ->required()
+                                    ->unique(ignoreRecord: true)
+                            ]),
+                        // Tabs\Tab::make('Tab 2')
+                        //     ->schema([
+                        //         // ...
+                        //     ]),
+                        // Tabs\Tab::make('Tab 3')
+                        //     ->schema([
+                        //         // ...
+                        //     ]),
+                    ])
             ]);
     }
 
@@ -52,15 +51,10 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                // Tables\Columns\TextColumn::make('guard_name')
-                //     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime('d/m/Y H:i:s')
+                TextColumn::make('id')
                     ->sortable(),
-                // ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('name'),
+                TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -79,10 +73,19 @@ class PermissionResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePermissions::route('/'),
+            'index' => Pages\ListPermissions::route('/'),
+            'create' => Pages\CreatePermission::route('/create'),
+            'edit' => Pages\EditPermission::route('/{record}/edit'),
         ];
     }
 }

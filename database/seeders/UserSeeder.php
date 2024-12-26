@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
@@ -14,10 +14,21 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'user' . Str::random(3),
-            'email' => 'email' . Str::random(3).'@example.com',
-            'password' => Hash::make('password'),
+        $user = User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'document' => '999.999.999-00',
+            'password' => Hash::make('123456'),
         ]);
+        $role = Role::create(['name' => 'Admin']);
+        $user->assignRole($role);
+
+        Role::create(['name' => 'User']);
+        User::factory()
+            ->count(50)
+            ->create()
+            ->each(function ($usr) {
+                $usr->assignRole('User');
+            });
     }
 }

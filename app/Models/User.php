@@ -7,6 +7,7 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -16,13 +17,10 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable // implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory;
-    use Notifiable;
-    use HasRoles;
-    use LogsActivity;
+    use HasFactory, Notifiable, LogsActivity, HasRoles;
 
 
     /**
@@ -33,8 +31,8 @@ class User extends Authenticatable implements FilamentUser
     protected $fillable = [
         'name',
         'email',
-        'document',
         'password',
+        'document',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -66,12 +64,13 @@ class User extends Authenticatable implements FilamentUser
             'password' => 'hashed',
         ];
     }
-
+    
+// *********************************************************************
     public function canAccessPanel(Panel $panel): bool
     {
-        // return $this->hasPermissionTo('access_admin');
-        return true;
+        return $this->hasPermissionTo('Access-Panel');
     }
+// *********************************************************************
 
     public function address(): HasOne // Relação (Um para Um)
     {
@@ -86,5 +85,16 @@ class User extends Authenticatable implements FilamentUser
     public function tasks(): HasManyThrough
     {
         return $this->hasManyThrough(Task::class, Project::class);
+    }
+
+    
+    public function phoneNumbers(): HasMany
+    {
+        return $this->hasMany(PhoneNumber::class);
+    }
+    
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
     }
 }

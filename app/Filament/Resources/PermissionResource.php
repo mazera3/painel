@@ -28,23 +28,24 @@ class PermissionResource extends Resource
                 Tabs::make('Tabs')
                     ->tabs([
                         Tabs\Tab::make('Permissões')
+                            ->icon('heroicon-m-key')
                             ->schema([
                                 TextInput::make('name')
+
                                     ->minLength(2)
                                     ->maxLength(255)
                                     ->required()
                                     ->unique(ignoreRecord: true)
                             ]),
-                        // Tabs\Tab::make('Tab 2')
-                        //     ->schema([
-                        //         // ...
-                        //     ]),
-                        // Tabs\Tab::make('Tab 3')
-                        //     ->schema([
-                        //         // ...
-                        //     ]),
+                        Tabs\Tab::make('Descrição')
+                            ->icon('heroicon-m-bell')
+                            ->schema([
+                                TextInput::make('description')
+
+                                    ->columnSpanFull(),
+                            ]),
                     ])
-            ]);
+            ])->columns(false);
     }
 
     public static function table(Table $table): Table
@@ -53,7 +54,10 @@ class PermissionResource extends Resource
             ->columns([
                 TextColumn::make('id')
                     ->sortable(),
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('description'),
                 TextColumn::make('created_at')
                     ->dateTime('d/m/Y H:i:s')
                     ->sortable()
@@ -65,6 +69,8 @@ class PermissionResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

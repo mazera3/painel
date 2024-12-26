@@ -135,6 +135,8 @@ php artisan make:policy PermissionPolicy --model=Permission
 php artisan make:model Permission
 # cria app/Policies/PostPolicy.php
 php artisan make:policy PostPolicy --model=Post
+# cria app/Policies/CategoryPolicy.php
+php artisan make:policy CategoryPolicy --model=Category
 
 # Criar permissions na base de dados
 # Regra para usuarios

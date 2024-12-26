@@ -17,7 +17,6 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 
 class UserResource extends Resource
 {
@@ -97,8 +96,6 @@ class UserResource extends Resource
                                     ->preload()
                                     ->optionsLimit(5)
                             ]),
-
-
                         Tabs\Tab::make('Telefones')
                             ->columns(null)
                             ->icon('heroicon-o-phone')
@@ -230,7 +227,7 @@ class UserResource extends Resource
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
-            'view' => Pages\ViewUser::route('/{record}/view'),
+            // 'view' => Pages\ViewUser::route('/{record}'),
         ];
     }
 }

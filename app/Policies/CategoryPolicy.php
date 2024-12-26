@@ -2,17 +2,18 @@
 
 namespace App\Policies;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class UserPolicy
+class CategoryPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        if ($user->hasPermissionTo('View User')) {
+        if ($user->hasPermissionTo('View Category')) {
             return true;
         }
         return false;
@@ -21,9 +22,9 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, Category $category): bool
     {
-        if ($user->hasPermissionTo('Info User')) {
+        if ($user->hasPermissionTo('Info Category')) {
             return true;
         }
         return false;
@@ -34,7 +35,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->hasPermissionTo('Create User')) {
+        if ($user->hasPermissionTo('Create Category')) {
             return true;
         }
         return false;
@@ -43,9 +44,9 @@ class UserPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): bool
+    public function update(User $user, Category $category): bool
     {
-        if ($user->hasPermissionTo('Update User')) {
+        if ($user->hasPermissionTo('Update Category')) {
             return true;
         }
         return false;
@@ -54,9 +55,9 @@ class UserPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user): bool
+    public function delete(User $user, Category $category): bool
     {
-        if ($user->hasPermissionTo('Delete User')) {
+        if ($user->hasPermissionTo('Delete Category')) {
             return true;
         }
         return false;
@@ -65,7 +66,7 @@ class UserPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Category $category): bool
     {
         return false;
     }
@@ -73,7 +74,7 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Category $category): bool
     {
         return false;
     }

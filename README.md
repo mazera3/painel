@@ -137,11 +137,10 @@ php artisan make:model Permission
 php artisan make:policy PostPolicy --model=Post
 # cria app/Policies/CategoryPolicy.php
 php artisan make:policy CategoryPolicy --model=Category
-
-# Criar permissions na base de dados
-# Regra para usuarios
-# fn(Builder $query) => auth()->user()->hasRole('Admin) ? null : $query->where('name','!=",'Admin')
-# https://filamentphp.com/docs/3.x/panels/resources/getting-started#disabling-global-scopes
+# cria app/Policies/ProjectPolicy.php
+php artisan make:policy ProjectPolicy --model=Project
+# cria app/Policies/TaskPolicy.php
+php artisan make:policy TaskPolicy --model=Task
 
 # Criar Sedeer
 pa make:seeder PermissionSeeder

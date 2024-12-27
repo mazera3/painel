@@ -228,6 +228,42 @@ php artisan model:show User
 ## Implementação de Posts, Categories e PhoneNumber
 - [HasMany](https://github.com/mazera3/Relacionamento-HasMany.git)
 
-## A verificar
-- https://github.com/laravel/fortify/tree/1.x
-- https://laravel.com/docs/11.x/fortify
+## Implementar Widgets
+- [Filament Widgets](https://filamentphp.com/docs/3.x/widgets/installation)
+- [Vídeo](https://youtu.be/lBOQnPUWyZ0?si=BpJy9DNLwnxTnYul)
+How to Create a Dashboard Using Stats, Widgets & Tables in FilamentPHP - FilamentPHP for Beginners.
+```sh
+php artisan filament:install --widgets
+npm install tailwindcss @tailwindcss/forms @tailwindcss/typography postcss postcss-nesting autoprefixer --save-dev
+# Criar um novo tailwind.config.js na para resource/css/filament
+```
+![tailwind.config.js](figuras/image01.png)
+```sh
+# Adicionar as camadas CSS do Tailwind ao resources/css/app.css
+```
+![app.css](figuras/image02.png)
+```sh
+# Criar o arquivo postcss.config.js na raiz seu projeto
+```
+![postcss.config.js](figuras/image03.png)
+```sh
+# atualizar o vite.config.js
+# Compile novos ativos CSS e Javascript
+npm run dev
+# Criar um novo arquivo de layout resources/views/components/layouts/app.blade.php
+# publicar a configuração do pacote
+php artisan vendor:publish --tag=filament-config
+composer update
+php artisan filament:upgrade
+# criando um widget de estartiscas gerais
+php artisan make:filament-widget StatsOverview --stats-overview
+# Widgets de gráfico de usuarios
+php artisan make:filament-widget UserChart --chart // Line Chart
+# Widgets de tabela de usuarios
+php artisan make:filament-widget UserTable --table // Line Table
+
+```
+## Laravel Trend
+- [Github](https://github.com/Flowframe/laravel-trend)
+```sh
+composer require flowframe/laravel-trend

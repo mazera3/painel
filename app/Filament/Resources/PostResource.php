@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
+use Filament\Infolists\Infolist;
 
 class PostResource extends Resource
 {
@@ -26,7 +27,7 @@ class PostResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationGroup = 'Postagens';
     protected static ?int $navigationSort = 4;
-    
+
 
     public static function form(Form $form): Form
     {
@@ -131,6 +132,7 @@ class PostResource extends Resource
                 ]),
             ]);
     }
+
 
     public static function getRelations(): array
     {

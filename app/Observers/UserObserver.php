@@ -6,8 +6,6 @@ use App\Models\User;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
 
-use function Laravel\Prompts\warning;
-
 class UserObserver
 {
     /**
@@ -57,7 +55,7 @@ class UserObserver
     /**
      * Handle the User "restored" event.
      */
-    public function restored(User $user): void
+    public function export(User $user): void
     {
         //
     }

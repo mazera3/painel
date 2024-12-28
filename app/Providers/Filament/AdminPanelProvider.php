@@ -52,6 +52,7 @@ class AdminPanelProvider extends PanelProvider
             ->passwordReset()
             ->authGuard('web')
             ->emailVerification()
+            ->databaseNotificationsPolling('5s')
             ->topNavigation()
             ->brandName('BibeLivre')
             ->brandLogo(fn(): View => view('filament.logo'))

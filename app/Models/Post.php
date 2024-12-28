@@ -13,6 +13,8 @@ class Post extends Model
 
     protected $guarded = ['id'];
 
+    protected $fillable = ['title', 'slug', 'content', 'image'];
+
     protected $casts = [
         'published' => 'boolean',
         'published_at' => 'datetime',

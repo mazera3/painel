@@ -267,3 +267,26 @@ php artisan make:filament-widget UserTable --table // Line Table
 - [Github](https://github.com/Flowframe/laravel-trend)
 ```sh
 composer require flowframe/laravel-trend
+```
+## Exportar com CSV ou XLSX
+- [Filament Actions](https://filamentphp.com/docs/3.x/actions/prebuilt-actions/export)
+```sh
+# Instalação
+php artisan make:queue-batches-table
+php artisan vendor:publish --tag=filament-actions-migrations
+php artisan migrate
+# Criar uma classe de exportador para a model User
+php artisan make:filament-exporter User --generate
+```
+## Importar CSV
+```sh
+# Criar uma classe de importador para a model User
+php artisan make:filament-importer User --generate
+```
+
+# Laravel Blade
+- https://kinsta.com/pt/blog/laravel-blade/
+## Layout
+```sh
+# Criar um layout: resources/views/components/layout.blade.php
+php artisan make:component Layout

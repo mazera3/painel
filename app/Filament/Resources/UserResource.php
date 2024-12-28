@@ -17,6 +17,13 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Hash;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
+use Filament\Tables\Actions\ImportAction;
+use App\Filament\Exports\UserExporter;
+use App\Filament\Imports\UserImporter;
+use Filament\Actions\Exports\Enums\ExportFormat;
+
 
 class UserResource extends Resource
 {
@@ -207,10 +214,31 @@ class UserResource extends Resource
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ViewAction::make(),
             ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(UserExporter::class)
+                    ->color('info')
+                    ->label('Exportar CSV ou XLSX'),
+                ImportAction::make()
+                    ->importer(UserImporter::class)
+                    ->maxRows(1000)
+                    ->csvDelimiter(',')
+                    ->color('warning')
+                    ->label('Importar CSV'),
+            ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\DeleteBulkAction::make(),
+                ExportBulkAction::make()
+                    ->exporter(UserExporter::class)
+                    ->color('info')
+                    ->label('Exportar CSV')
+                    ->formats([
+                        ExportFormat::Csv,
+                    ])
+                // ]),
+                // ExportBulkAction::make()
+                //     ->exporter(UserExporter::class)
             ]);
     }
 
@@ -230,4 +258,5 @@ class UserResource extends Resource
             // 'view' => Pages\ViewUser::route('/{record}'),
         ];
     }
+
 }
